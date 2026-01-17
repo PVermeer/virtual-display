@@ -1,0 +1,47 @@
+// For format details, see https://aka.ms/devcontainer.json.
+{
+	"name": "Fedora",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installZsh": "false",
+			"username": "vscode",
+			"userUid": "1000",
+			"userGid": "1000",
+			"upgradePackages": "false"
+		}
+	},
+	"runArgs": [
+		"--privileged", // Unsecure but allows flatpak install
+		"--device=/dev/dri",
+		"--network=host", // If network is slow in container
+		"--device=/dev/fuse",
+		"--volume=/sys/kernel/debug:/sys/kernel/debug" // Mount debugFs for sys config overrides
+	],
+	"containerEnv": {
+		"RUN_IN_VSCODE_DEVCONTAINER": "true",
+		"DISPLAY": "${localEnv:DISPLAY}"
+	},
+	"mounts": [],
+	// "postCreateCommand": "",
+	"postStartCommand": "sudo dnf update -y && (rustup update || (rustup toolchain uninstall stable && rustup toolchain install stable)) && flatpak --user update -y && sudo flatpak --installation=\"some_custom_installation\" update -y && git submodule update --init --recursive",
+	"initializeCommand": "xhost +local:docker", // Allow x11 from docker
+	"remoteUser": "vscode",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"rust-lang.rust-analyzer",
+				"vadimcn.vscode-lldb",
+				"tamasfe.even-better-toml",
+				"redhat.vscode-yaml",
+				"timonwong.shellcheck",
+				"redhat.vscode-xml",
+				"lumirelle.shell-format-rev",
+				"esbenp.prettier-vscode",
+				"ms-azuretools.vscode-containers"
+			]
+		}
+	}
+}

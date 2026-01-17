@@ -1,0 +1,10 @@
+[package]
+name = "virtual-display"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.100"
+sudo = "0.6.0"
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.20", features = ["env-filter"] }

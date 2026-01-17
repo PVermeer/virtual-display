@@ -1,0 +1,9 @@
+/target
+/.flatpak-builder
+
+
+# Added by cargo
+#
+# already existing elements were commented out
+
+#/target
