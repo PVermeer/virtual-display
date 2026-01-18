@@ -1,29 +1,14 @@
+mod daemon;
 mod gpu_info;
 
-use anyhow::{Context, Result, bail};
+use anyhow::{Result, bail};
+use common::logging;
 use gpu_info::get_gpu_info;
-use std::{fs, path::Path, str::FromStr};
-use tracing::{Level, debug, error};
-use tracing_subscriber::{FmtSubscriber, util::SubscriberInitExt};
+use std::{fs, path::Path};
+use tracing::{debug, error};
 
-fn get_log_level() -> Option<Level> {
-    std::env::var("VD_LOG")
-        .with_context(|| {
-            let info = "No LOG environment variable set";
-            println!("{info}");
-            info
-        })
-        .and_then(|level_str| {
-            Level::from_str(&level_str).with_context(|| {
-                let error = format!("Invalid LOG environment variable set, using '{level_str}'");
-                eprintln!("{error:?}");
-                error
-            })
-        })
-        .ok()
-}
-
-fn main() -> Result<()> {
+#[tokio::main(flavor = "multi_thread")]
+async fn main() -> Result<()> {
     match sudo::escalate_if_needed() {
         Ok(_) => (),
         Err(error) => {
@@ -36,22 +21,18 @@ fn main() -> Result<()> {
         println!("======== Running debug build ========");
     }
 
-    /* Logging */
-    let mut log_level = if cfg!(debug_assertions) {
-        Level::DEBUG
-    } else {
-        Level::INFO
-    };
-    log_level = get_log_level().unwrap_or(log_level);
-    // Disable > info logging for external crates
-    let filter = format!("{}={log_level},common={log_level}", "virtual_display");
+    logging::init_logging();
 
-    let logger = FmtSubscriber::builder()
-        .with_max_level(Level::INFO)
-        .with_env_filter(filter)
-        .finish();
-    logger.init();
+    daemon::run_daemon().await?;
 
+    // enable_virtual_display()?;
+
+    println!("========DONE");
+
+    Ok(())
+}
+
+fn enable_virtual_display() -> Result<()> {
     let gpu_info = get_gpu_info()?;
 
     let Some(empty_connector) = gpu_info
@@ -86,8 +67,6 @@ fn main() -> Result<()> {
     fs::write(edid_override_path, edid)?;
     fs::write(force_on_path, "on")?;
     fs::write(trigger_hot_plug_path, "1")?;
-
-    println!("========DONE");
 
     Ok(())
 }

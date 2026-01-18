@@ -4,6 +4,19 @@
 		{
 			"type": "cargo",
 			"command": "build",
+			"args": [],
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"label": "Build debug"
+		},
+		{
+			"type": "cargo",
+			"command": "build",
 			"args": [
 				"--release"
 			],

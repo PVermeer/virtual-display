@@ -7,7 +7,7 @@
     {
       "type": "lldb",
       "request": "launch",
-      "name": "Debug",
+      "name": "Debug Daemon",
       "env": {
         // "RUST_BACKTRACE": "1",
         "VD_LOG": "debug",
@@ -16,6 +16,25 @@
       "cargo": {
         "args": [
           "build",
+          "--bin=virtual-display-daemon"
+        ],
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+        {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug CLI",
+      "env": {
+        // "RUST_BACKTRACE": "1",
+        "VD_LOG": "debug",
+        "GSETTINGS_BACKEND": "memory"
+      },
+      "cargo": {
+        "args": [
+          "build",
+          "--bin=virtual-display"
         ],
       },
       "args": [],
