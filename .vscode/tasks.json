@@ -28,6 +28,18 @@
 				"isDefault": false
 			},
 			"label": "Build release"
-		}
+		},
+		{
+			"type": "shell",
+			"command": "sudo pkill -f virtual-display-daemon",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": {
+				"kind": "none",
+				"isDefault": false
+			},
+			"label": "Stop daemon"
+		},
 	]
 }
