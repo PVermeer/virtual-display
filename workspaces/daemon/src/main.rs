@@ -1,5 +1,6 @@
 mod daemon;
 mod gpu_info;
+mod requests;
 
 use anyhow::{Result, bail};
 use common::logging;
@@ -26,8 +27,6 @@ async fn main() -> Result<()> {
     daemon::run_daemon().await?;
 
     // enable_virtual_display()?;
-
-    println!("========DONE");
 
     Ok(())
 }
