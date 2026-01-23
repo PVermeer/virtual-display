@@ -3,13 +3,13 @@ use clap::{Parser, Subcommand};
 #[derive(Parser)]
 pub struct Cli {
     #[command(subcommand)]
-    pub command: Option<Command>,
+    pub command: Command,
 }
 
 #[derive(Subcommand)]
 pub enum Command {
-    /// Run the daemon (systemd)
-    Run,
+    /// Run the daemon commands
+    Daemon(Daemon),
 
     /// Get daemon status
     Status,
@@ -19,4 +19,16 @@ pub enum Command {
 
     /// Ask daemon to stop
     Stop,
+}
+
+#[derive(Parser)]
+pub struct Daemon {
+    #[command(subcommand)]
+    pub subcommand: DeamonCommands,
+}
+
+#[derive(Subcommand)]
+pub enum DeamonCommands {
+    /// Start the daemon (systemd)
+    Start,
 }

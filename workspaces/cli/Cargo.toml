@@ -13,4 +13,6 @@ clap = { workspace = true }
 common = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
+systemctl = { workspace = true }
 tokio = { workspace = true }
+tracing = { workspace = true }
