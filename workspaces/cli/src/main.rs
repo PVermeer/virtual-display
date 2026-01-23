@@ -1,6 +1,7 @@
 mod arguments;
 mod cli;
 mod commands;
+mod socket;
 
 use anyhow::Result;
 use arguments::Cli;

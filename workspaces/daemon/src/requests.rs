@@ -1,8 +1,10 @@
+use super::daemon::stop_daemon;
 use anyhow::{Context, Result};
 use common::api::{Request, Response};
 use tokio::{
     io::{AsyncReadExt, AsyncWriteExt},
     net::UnixStream,
+    sync::broadcast::Sender,
 };
 use tracing::{debug, info};
 
@@ -36,13 +38,13 @@ async fn write_response(stream: &mut UnixStream, response: &Response) -> Result<
 
 /// # Errors
 /// On failed to read or write data to a stream
-pub async fn handle_requests(mut stream: UnixStream) -> Result<()> {
+pub async fn handle_requests(mut stream: UnixStream, shutdown_tx: Sender<()>) -> Result<()> {
     let request = read_request(&mut stream).await?;
 
     let response = match request {
-        Request::Status => Response::Ok("Running".into()),
+        Request::Enable(_arguments) => Response::Ok("Enable".into()),
         Request::Reload => Response::Ok("Reloaded".into()),
-        Request::Stop => Response::Ok("Stopping".into()),
+        Request::Stop => stop_daemon(&shutdown_tx),
     };
 
     write_response(&mut stream, &response).await?;

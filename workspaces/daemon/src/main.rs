@@ -5,9 +5,7 @@ mod virtual_display;
 
 use anyhow::{Result, bail};
 use common::logging;
-use gpu_info::get_gpu_info;
-use std::{fs, path::Path};
-use tracing::{debug, error};
+use tracing::error;
 
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> Result<()> {

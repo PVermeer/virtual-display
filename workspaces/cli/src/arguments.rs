@@ -11,14 +11,11 @@ pub enum Command {
     /// Run the daemon commands
     Daemon(Daemon),
 
-    /// Get daemon status
-    Status,
+    /// Enable virtual display
+    Enable(EnableArgs),
 
-    /// Reload configuration
-    Reload,
-
-    /// Ask daemon to stop
-    Stop,
+    /// Disable virtual display
+    Disable,
 }
 
 #[derive(Parser)]
@@ -31,4 +28,13 @@ pub struct Daemon {
 pub enum DeamonCommands {
     /// Start the daemon (systemd)
     Start,
+    /// Stop the daemon (systemd)
+    Stop,
+}
+
+#[derive(Parser, Debug)]
+pub struct EnableArgs {
+    /// Name of the person to greet
+    #[arg(short, long)]
+    pub connector: Option<String>,
 }
