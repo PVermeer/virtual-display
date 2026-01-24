@@ -1,15 +1,24 @@
 use anyhow::{Context, Result, bail};
+use common::api::{GpuInfo, Response};
+use serde_json::json;
 use std::{
     fs::{self},
     path::Path,
 };
-use tracing::{debug, error};
+use tracing::{debug, error, instrument};
 
-#[derive(Debug)]
-pub struct GpuInfo {
-    pub connector: String,
-    pub connected: bool,
-    pub device_minor: i32,
+#[instrument(err)]
+pub fn gpu_info() -> Result<Response> {
+    match get_gpu_info() {
+        Ok(gpu_info) => {
+            let gpu_info_serialized = json!(gpu_info);
+            Ok(Response::Ok(gpu_info_serialized.to_string()))
+        }
+        Err(error) => {
+            error!(?error);
+            Ok(Response::Error(error.to_string()))
+        }
+    }
 }
 
 pub fn get_gpu_info() -> Result<Vec<GpuInfo>> {

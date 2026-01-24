@@ -1,6 +1,7 @@
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
+#[command(version, about, long_about = None)]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Command,
@@ -8,14 +9,21 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Command {
-    /// Run the daemon commands
+    /// Get display info
+    Info(InfoArgs),
+    /// Run daemon commands
     Daemon(Daemon),
-
     /// Enable virtual display
     Enable(EnableArgs),
-
     /// Disable virtual display
     Disable,
+}
+
+#[derive(Parser, Debug)]
+pub struct InfoArgs {
+    /// Print json
+    #[arg(long)]
+    pub json: bool,
 }
 
 #[derive(Parser)]
@@ -34,7 +42,7 @@ pub enum DeamonCommands {
 
 #[derive(Parser, Debug)]
 pub struct EnableArgs {
-    /// Name of the person to greet
+    /// Name of the display connector
     #[arg(short, long)]
     pub connector: Option<String>,
 }

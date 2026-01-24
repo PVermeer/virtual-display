@@ -1,7 +1,8 @@
 [package]
-name = "cli"
+name = "virtual-display"
 version = { workspace = true }
 edition = { workspace = true }
+description = "Virtual Display CLI"
 
 [[bin]]
 name = "virtual-display"

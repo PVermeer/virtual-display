@@ -2,7 +2,7 @@ use anyhow::{Context, Result, bail};
 use common::api::{DAEMON_BIN, Request, Response, SYSTEMD_UNIT};
 use std::{path::Path, process::Command};
 use systemctl::SystemCtl;
-use tracing::{debug, error};
+use tracing::{debug, error, instrument};
 
 use crate::{arguments::DeamonCommands, socket::send_request};
 
@@ -13,6 +13,7 @@ pub async fn run_daemon_command(command: &DeamonCommands) -> Result<()> {
     }
 }
 
+#[instrument(err)]
 fn start_daemon() -> Result<()> {
     let systemctl = SystemCtl::default();
 
@@ -54,6 +55,7 @@ fn start_daemon() -> Result<()> {
     Ok(())
 }
 
+#[instrument(err)]
 async fn stop_daemon() -> Result<()> {
     let systemctl = SystemCtl::default();
 

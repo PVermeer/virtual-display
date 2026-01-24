@@ -1,32 +1,63 @@
 use crate::{
-    arguments::{Command, EnableArgs},
-    socket::send_request,
+    arguments::{EnableArgs, InfoArgs},
+    socket::{handle_response, send_request},
 };
-use anyhow::{Result, bail};
-use common::api::{Enable, Request, Response};
-use tracing::debug;
+use anyhow::Result;
+use common::api::{Enable, GpuInfoVec, Request, Response};
+use tracing::{debug, instrument};
 
-pub async fn run_display_command(command: &Command) -> Result<()> {
-    match command {
-        Command::Enable(arguments) => enable_display(arguments).await,
-        Command::Disable => todo!(),
-        Command::Daemon(_) => bail!("Command should not end up here!"),
+#[instrument(err)]
+pub async fn display_info(arguments: &InfoArgs) -> Result<()> {
+    debug!("Getting display info");
+
+    let request = Request::Info;
+    let response = send_request(request).await?;
+    match response {
+        Response::Ok(result) => {
+            if arguments.json {
+                println!("{result}");
+            } else {
+                let display_info: GpuInfoVec = serde_json::from_str(&result)?;
+
+                println!("Connectors:\n");
+                for info in display_info {
+                    let connector_status = if info.connected {
+                        "connected"
+                    } else {
+                        "available"
+                    };
+                    println!("{}: {connector_status}", info.connector);
+                }
+            }
+        }
+        Response::Error(_) => {
+            handle_response(response);
+        }
     }
+
+    Ok(())
 }
 
-async fn enable_display(arguments: &EnableArgs) -> Result<()> {
-    debug!(?arguments, "Enabling display");
+#[instrument(err)]
+pub async fn enable_display(arguments: &EnableArgs) -> Result<()> {
+    debug!(?arguments, "Enabling virtual display");
 
     let request = Request::Enable(Enable {
         connector: arguments.connector.clone(),
     });
-
     let response = send_request(request).await?;
+    handle_response(response);
 
-    match response {
-        Response::Ok(message) => println!("{message}"),
-        Response::Error(error) => eprintln!("error: {error}"),
-    }
+    Ok(())
+}
+
+#[instrument(err)]
+pub async fn disable_display() -> Result<()> {
+    debug!("Disabling virtual display");
+
+    let request = Request::Disable;
+    let response = send_request(request).await?;
+    handle_response(response);
 
     Ok(())
 }

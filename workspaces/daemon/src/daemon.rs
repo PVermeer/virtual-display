@@ -16,7 +16,7 @@ use tokio::{
     sync::{self, broadcast},
     task::JoinSet,
 };
-use tracing::{error, info};
+use tracing::{error, info, instrument};
 
 fn connect_socket() -> Result<(UnixListener, PathBuf)> {
     info!("Setting up socket");
@@ -66,6 +66,7 @@ async fn stop_signal(mut shutdown_rx: broadcast::Receiver<()>) {
     }
 }
 
+#[instrument(err)]
 pub async fn run_daemon() -> Result<()> {
     info!("Starting daemon");
 
@@ -104,7 +105,8 @@ pub async fn run_daemon() -> Result<()> {
     Ok(())
 }
 
-pub fn stop_daemon(shutdown_tx: &sync::broadcast::Sender<()>) -> Response {
+#[instrument(err)]
+pub fn stop_daemon(shutdown_tx: &sync::broadcast::Sender<()>) -> Result<Response> {
     let _ = shutdown_tx.send(());
-    Response::Ok("Daemon stopped".into())
+    Ok(Response::Ok("Daemon stopped".into()))
 }

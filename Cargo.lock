@@ -143,20 +143,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c3e64b0cc0439b12df2fa678eae89a1c56a529fd067a9115f7827f1fffd22b32"
 
 [[package]]
-name = "cli"
-version = "0.0.0"
-dependencies = [
- "anyhow",
- "clap",
- "common",
- "serde",
- "serde_json",
- "systemctl",
- "tokio",
- "tracing",
-]
-
-[[package]]
 name = "colorchoice"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -168,21 +154,6 @@ version = "0.0.0"
 dependencies = [
  "anyhow",
  "serde",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "daemon"
-version = "0.0.0"
-dependencies = [
- "anyhow",
- "clap",
- "common",
- "serde",
- "serde_json",
- "sudo",
- "tokio",
  "tracing",
  "tracing-subscriber",
 ]
@@ -639,6 +610,35 @@ name = "valuable"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ba73ea9cf16a25df0c8caa16c51acb937d5712a8429db78a3ee29d5dcacd3a65"
+
+[[package]]
+name = "virtual-display"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "common",
+ "serde",
+ "serde_json",
+ "systemctl",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "virtual-display-daemon"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "common",
+ "serde",
+ "serde_json",
+ "sudo",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
 
 [[package]]
 name = "wasi"
