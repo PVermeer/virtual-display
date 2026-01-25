@@ -1,6 +1,8 @@
-use crate::gpu_info::gpu_info;
-
-use super::daemon::stop_daemon;
+use crate::{
+    daemon::stop_daemon,
+    gpu_info::gpu_info,
+    virtual_display::{disable_virtual_display, enable_virtual_display},
+};
 use anyhow::{Context, Result};
 use common::api::{Request, Response};
 use tokio::{
@@ -38,15 +40,13 @@ async fn write_response(stream: &mut UnixStream, response: &Response) -> Result<
     Ok(())
 }
 
-/// # Errors
-/// On failed to read or write data to a stream
 pub async fn handle_requests(mut stream: UnixStream, shutdown_tx: Sender<()>) -> Result<()> {
     let request = read_request(&mut stream).await?;
 
     let response = match request {
         Request::Info => gpu_info()?,
-        Request::Enable(_arguments) => Response::Ok("Enable".into()),
-        Request::Disable => Response::Ok("Disable".into()),
+        Request::Enable(arguments) => enable_virtual_display(&arguments)?,
+        Request::Disable => disable_virtual_display()?,
         Request::Stop => stop_daemon(&shutdown_tx)?,
     };
 

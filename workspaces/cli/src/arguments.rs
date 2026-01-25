@@ -1,4 +1,5 @@
 use clap::{Parser, Subcommand};
+use common::api::EnableArgs;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
@@ -38,11 +39,4 @@ pub enum DeamonCommands {
     Start,
     /// Stop the daemon (systemd)
     Stop,
-}
-
-#[derive(Parser, Debug)]
-pub struct EnableArgs {
-    /// Name of the display connector
-    #[arg(short, long)]
-    pub connector: Option<String>,
 }

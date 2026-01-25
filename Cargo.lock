@@ -153,6 +153,7 @@ name = "common"
 version = "0.0.0"
 dependencies = [
  "anyhow",
+ "clap",
  "serde",
  "tracing",
  "tracing-subscriber",

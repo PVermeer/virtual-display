@@ -1,9 +1,9 @@
 use crate::{
-    arguments::{EnableArgs, InfoArgs},
+    arguments::InfoArgs,
     socket::{handle_response, send_request},
 };
 use anyhow::Result;
-use common::api::{Enable, GpuInfoVec, Request, Response};
+use common::api::{EnableArgs, GpuInfo, Request, Response};
 use tracing::{debug, instrument};
 
 #[instrument(err)]
@@ -17,7 +17,7 @@ pub async fn display_info(arguments: &InfoArgs) -> Result<()> {
             if arguments.json {
                 println!("{result}");
             } else {
-                let display_info: GpuInfoVec = serde_json::from_str(&result)?;
+                let display_info: GpuInfo = serde_json::from_str(&result)?;
 
                 println!("Connectors:\n");
                 for info in display_info {
@@ -26,7 +26,7 @@ pub async fn display_info(arguments: &InfoArgs) -> Result<()> {
                     } else {
                         "available"
                     };
-                    println!("{}: {connector_status}", info.connector);
+                    println!("{}: {connector_status}", info.name);
                 }
             }
         }
@@ -42,7 +42,7 @@ pub async fn display_info(arguments: &InfoArgs) -> Result<()> {
 pub async fn enable_display(arguments: &EnableArgs) -> Result<()> {
     debug!(?arguments, "Enabling virtual display");
 
-    let request = Request::Enable(Enable {
+    let request = Request::Enable(EnableArgs {
         connector: arguments.connector.clone(),
     });
     let response = send_request(request).await?;

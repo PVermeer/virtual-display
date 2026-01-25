@@ -1,5 +1,5 @@
 use anyhow::{Context, Result, bail};
-use common::api::{GpuInfo, Response};
+use common::api::{GpuConnector, Response};
 use serde_json::json;
 use std::{
     fs::{self},
@@ -21,7 +21,7 @@ pub fn gpu_info() -> Result<Response> {
     }
 }
 
-pub fn get_gpu_info() -> Result<Vec<GpuInfo>> {
+pub fn get_gpu_info() -> Result<Vec<GpuConnector>> {
     debug!("Getting GPU info");
 
     let mut gpu_info_vec = Vec::new();
@@ -59,8 +59,8 @@ pub fn get_gpu_info() -> Result<Vec<GpuInfo>> {
             bail!(message)
         };
 
-        let gpu_info = GpuInfo {
-            connector: connector_id.to_string(),
+        let gpu_info = GpuConnector {
+            name: connector_id.to_string(),
             connected: is_connected,
             device_minor,
         };
