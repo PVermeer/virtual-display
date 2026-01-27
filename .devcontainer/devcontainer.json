@@ -40,7 +40,10 @@
 				"redhat.vscode-xml",
 				"lumirelle.shell-format-rev",
 				"esbenp.prettier-vscode",
-				"ms-azuretools.vscode-containers"
+				"ms-azuretools.vscode-containers",
+				"prince781.vala",
+				"RVSmartPorting.rpm-spec-ext",
+				"IronGeek.vscode-env"
 			]
 		}
 	}

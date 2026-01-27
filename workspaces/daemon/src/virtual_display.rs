@@ -43,7 +43,7 @@ fn get_kernel_debug_dri_path() -> PathBuf {
         .join("dri")
 }
 
-fn get_empty_connector(arguments: &EnableArgs) -> Result<GpuConnector> {
+fn get_connector(arguments: &EnableArgs) -> Result<GpuConnector> {
     let gpu_info = get_gpu_info()?;
 
     if let Some(connector) = &arguments.connector {
@@ -91,7 +91,7 @@ fn get_connector_from_state() -> Result<GpuConnector> {
 }
 
 fn set_virtual_display(arguments: &EnableArgs) -> Result<String> {
-    let connector = get_empty_connector(arguments)?;
+    let connector = get_connector(arguments)?;
 
     debug!(connector = connector.name, "Connecting virtual display");
 

@@ -1,6 +1,7 @@
 /target
 /.flatpak-builder
-
+.env
+/rpmbuild
 
 # Added by cargo
 #

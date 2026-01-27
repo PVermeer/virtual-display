@@ -1,0 +1,13 @@
+[Unit]
+Description=Virtual Display Daemon
+After=multi-user.target
+StartLimitIntervalSec=10
+StartLimitBurst=5
+
+[Service]
+ExecStart=virtual-display-daemon
+Nice=19
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -30,6 +30,19 @@
 			"label": "Build release"
 		},
 		{
+			"label": "Build rpm",
+			"type": "shell",
+			"command": "./rpm-tools/rpm-tool",
+			"args": [
+				"build",
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
 			"type": "shell",
 			"command": "sudo pkill -f virtual-display-daemon",
 			"problemMatcher": [
