@@ -7,6 +7,8 @@ use std::{
 };
 use tracing::{debug, error, instrument};
 
+static EDID: &[u8] = include_bytes!("../../../edids/HDR4k_120.bin");
+
 #[instrument(err)]
 pub fn enable_virtual_display(arguments: &EnableArgs) -> Result<Response> {
     match set_virtual_display(arguments) {
@@ -101,15 +103,8 @@ fn set_virtual_display(arguments: &EnableArgs) -> Result<String> {
     let edid_override_path = debug_dri_dir.join("edid_override");
     let force_on_path = debug_dri_dir.join("force");
     let trigger_hot_plug_path = debug_dri_dir.join("trigger_hotplug");
-    let edid_path = Path::new("edids").join("HDR4k_120.bin");
 
-    let Ok(edid) = fs::read(&edid_path) else {
-        let message = "Failed to read edid";
-        error!(path = ?edid_path, message);
-        bail!(message);
-    };
-
-    fs::write(edid_override_path, edid)?;
+    fs::write(edid_override_path, EDID)?;
     fs::write(force_on_path, "on")?;
     fs::write(trigger_hot_plug_path, "1")?;
 
