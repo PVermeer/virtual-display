@@ -49,6 +49,7 @@ cd %{workdir}
 %build
 cd %{sourcedir}
 rustup-init -y
+source "$HOME/.cargo/env"
 cargo build --release
 
 %check
