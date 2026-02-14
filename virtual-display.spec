@@ -2,16 +2,15 @@
 # for sourcing and patching
 %bcond local 0
 
-# Source repo 1
+# Source repo
 %global author pvermeer
 %global source virtual-display
 %global sourcerepo https://github.com/PVermeer/virtual-display
-%global commit dbd6a2dc2f54b9bf89c86e34d750fbb75879865c
-%global versioncommit %(echo -n %{commit} | head -c 8)
+%global tag v0.0.0
 
 Name: virtual-display
-Version: 0.0.1
-Release: 0.%{versioncommit}%{?dist}
+Version: 0.0.0
+Release: 0%{?dist}
 License: GPL-3.0 license
 Summary: Enable a virtual kernel display
 Url: %{sourcerepo}
@@ -20,7 +19,7 @@ BuildRequires: git
 BuildRequires: rustup
 
 %description
-A deamon and cli to temporary enable/disable a virtual display via the kernel debug sys paths.
+A daemon and cli to temporary enable/disable a virtual display via the kernel debug sys paths.
 
 %define workdir %{_builddir}/%{name}
 %define sourcedir %{workdir}/%{source}
@@ -38,7 +37,7 @@ A deamon and cli to temporary enable/disable a virtual display via the kernel de
   # Get sources - COPR build
   git clone %{sourcerepo} %{sourcedir}
   cd %{sourcedir}
-  git reset --hard %{commit}
+  git reset --hard %{tag}
   cd %{workdir}
 %endif
 
