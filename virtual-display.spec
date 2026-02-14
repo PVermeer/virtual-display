@@ -79,7 +79,7 @@ systemctl start %{service}
 %systemd_postun_with_restart %{service}
 
 %files
-%{_unitdir}/%{service}
-%{_presetdir}/%{service_preset}
-%{_bindir}/virtual-display-daemon
-%{_bindir}/virtual-display
+/%{_unitdir}/%{service}
+/%{_presetdir}/%{service_preset}
+/%{_bindir}/virtual-display-daemon
+/%{_bindir}/virtual-display
