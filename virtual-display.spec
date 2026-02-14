@@ -17,6 +17,10 @@ Url: %{sourcerepo}
 
 BuildRequires: git
 BuildRequires: rustup
+BuildRequires: gcc
+BuildRequires: make
+BuildRequires: pkgconf-pkg-config
+BuildRequires: glibc-devel
 
 %description
 A daemon and cli to temporary enable/disable a virtual display via the kernel debug sys paths.
