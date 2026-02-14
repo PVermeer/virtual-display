@@ -15,6 +15,7 @@ License: GPL-3.0 license
 Summary: Enable a virtual kernel display
 Url: %{sourcerepo}
 
+BuildRequires: systemd-rpm-macros
 BuildRequires: git
 BuildRequires: rustup
 BuildRequires: gcc
