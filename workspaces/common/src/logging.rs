@@ -7,7 +7,9 @@ fn get_log_level() -> Option<Level> {
     std::env::var("VD_LOG")
         .with_context(|| {
             let info = "No LOG environment variable set";
-            println!("{info}");
+            if cfg!(debug_assertions) {
+                println!("{info}");
+            }
             info
         })
         .and_then(|level_str| {
