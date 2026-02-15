@@ -1,6 +1,6 @@
 use crate::{
     daemon::stop_daemon,
-    gpu_info::gpu_info,
+    gpu_info::status,
     virtual_display::{disable_virtual_display, enable_virtual_display},
 };
 use anyhow::{Context, Result};
@@ -44,7 +44,7 @@ pub async fn handle_requests(mut stream: UnixStream, shutdown_tx: Sender<()>) ->
     let request = read_request(&mut stream).await?;
 
     let response = match request {
-        Request::Info => gpu_info()?,
+        Request::Status => status()?,
         Request::Enable(arguments) => enable_virtual_display(&arguments)?,
         Request::Disable => disable_virtual_display()?,
         Request::Stop => stop_daemon(&shutdown_tx)?,

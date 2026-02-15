@@ -10,8 +10,8 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Command {
-    /// Get display info
-    Info(InfoArgs),
+    /// Get status
+    Status(StatusArgs),
     /// Run daemon commands
     Daemon(Daemon),
     /// Enable virtual display
@@ -21,7 +21,7 @@ pub enum Command {
 }
 
 #[derive(Parser, Debug)]
-pub struct InfoArgs {
+pub struct StatusArgs {
     /// Print json
     #[arg(long)]
     pub json: bool,

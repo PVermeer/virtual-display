@@ -8,7 +8,7 @@ use std::{
 use tracing::{debug, error, instrument};
 
 #[instrument(err)]
-pub fn gpu_info() -> Result<Response> {
+pub fn status() -> Result<Response> {
     match get_gpu_info() {
         Ok(gpu_info) => {
             let gpu_info_serialized = json!(gpu_info);

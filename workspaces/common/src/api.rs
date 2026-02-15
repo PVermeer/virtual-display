@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Request {
     Stop,
-    Info,
+    Status,
     Enable(EnableArgs),
     Disable,
 }

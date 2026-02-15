@@ -1,5 +1,5 @@
 use crate::{
-    arguments::InfoArgs,
+    arguments::StatusArgs,
     socket::{handle_response, send_request},
 };
 use anyhow::Result;
@@ -7,10 +7,10 @@ use common::api::{EnableArgs, GpuInfo, Request, Response};
 use tracing::{debug, instrument};
 
 #[instrument(err)]
-pub async fn display_info(arguments: &InfoArgs) -> Result<()> {
-    debug!("Getting display info");
+pub async fn status(arguments: &StatusArgs) -> Result<()> {
+    debug!("Getting status");
 
-    let request = Request::Info;
+    let request = Request::Status;
     let response = send_request(request).await?;
     match response {
         Response::Ok(result) => {
