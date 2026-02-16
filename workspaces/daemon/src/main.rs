@@ -1,6 +1,6 @@
 mod daemon;
-mod gpu_info;
 mod requests;
+mod status;
 mod virtual_display;
 
 use anyhow::{Result, bail};

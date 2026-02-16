@@ -1,6 +1,6 @@
 use crate::{
     daemon::stop_daemon,
-    gpu_info::status,
+    status::status,
     virtual_display::{disable_virtual_display, enable_virtual_display},
 };
 use anyhow::{Context, Result};

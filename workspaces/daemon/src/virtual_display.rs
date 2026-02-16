@@ -1,4 +1,4 @@
-use super::gpu_info::get_gpu_info;
+use super::status::get_gpu_info;
 use anyhow::{Result, bail};
 use common::api::{EnableArgs, GpuConnector, Response, STATE_DIR};
 use std::{
