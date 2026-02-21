@@ -6,11 +6,11 @@ mod socket;
 use anyhow::Result;
 use arguments::Cli;
 use clap::Parser;
-use common::logging::init_logging;
+use common::logging;
 
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> Result<()> {
-    init_logging();
+    logging::init();
 
     let arguments = Cli::parse();
     cli::run(arguments.command).await?;

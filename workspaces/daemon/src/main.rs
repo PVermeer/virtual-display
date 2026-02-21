@@ -1,5 +1,6 @@
 mod daemon;
 mod requests;
+mod state;
 mod status;
 mod virtual_display;
 
@@ -21,7 +22,8 @@ async fn main() -> Result<()> {
         println!("======== Running debug build ========");
     }
 
-    logging::init_logging();
+    logging::init();
+    state::init()?;
 
     daemon::run_daemon().await?;
 
