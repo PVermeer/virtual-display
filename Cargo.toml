@@ -4,7 +4,7 @@ resolver = "3"
 
 [workspace.package]
 name = "virtual-display"
-version = "0.0.0"
+version = "0.0.3"
 edition = "2024"
 
 [workspace.dependencies]
