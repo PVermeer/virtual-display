@@ -77,7 +77,7 @@ fn get_connector(arguments: &EnableArgs) -> Result<GpuConnector> {
     }
 }
 
-fn get_connector_from_state() -> Result<GpuConnector> {
+pub fn get_connector_from_state() -> Result<GpuConnector> {
     let connectors = state::get_all_state_by_type::<ConnectorState>()?;
     let connector = connectors.into_iter().next();
     let Some(connector) = connector else {

@@ -3,7 +3,7 @@ use crate::{
     socket::{handle_response, send_request},
 };
 use anyhow::Result;
-use common::api::{EnableArgs, GpuInfo, Request, Response};
+use common::api::{EnableArgs, Request, Response, Status};
 use tracing::{debug, instrument};
 
 #[instrument(err)]
@@ -17,17 +17,8 @@ pub async fn status(arguments: &StatusArgs) -> Result<()> {
             if arguments.json {
                 println!("{result}");
             } else {
-                let display_info: GpuInfo = serde_json::from_str(&result)?;
-
-                println!("Connectors:\n");
-                for info in display_info {
-                    let connector_status = if info.connected {
-                        "connected"
-                    } else {
-                        "available"
-                    };
-                    println!("{}: {connector_status}", info.name);
-                }
+                let display_info: Status = serde_json::from_str(&result)?;
+                println!("{display_info}");
             }
         }
         Response::Error(_) => {

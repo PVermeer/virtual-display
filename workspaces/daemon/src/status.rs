@@ -1,5 +1,5 @@
 use anyhow::{Context, Result, bail};
-use common::api::{GpuConnector, Response};
+use common::api::{GpuConnector, Response, Status};
 use serde_json::json;
 use std::{
     fs::{self},
@@ -7,18 +7,34 @@ use std::{
 };
 use tracing::{debug, error, instrument};
 
+use crate::virtual_display::get_connector_from_state;
+
 #[instrument(err)]
 pub fn status() -> Result<Response> {
-    match get_gpu_info() {
-        Ok(gpu_info) => {
-            let gpu_info_serialized = json!(gpu_info);
-            Ok(Response::Ok(gpu_info_serialized.to_string()))
+    match get_status() {
+        Ok(status) => {
+            let status_serialized = json!(status);
+            Ok(Response::Ok(status_serialized.to_string()))
         }
         Err(error) => {
             error!(?error);
             Ok(Response::Error(error.to_string()))
         }
     }
+}
+
+fn get_status() -> Result<Status> {
+    let gpu_info = get_gpu_info()?;
+    let virtual_display_connector = get_connector_from_state()
+        .ok()
+        .map(|connector| connector.name);
+
+    let status = Status {
+        virtual_display_connector,
+        gpu_info,
+    };
+
+    Ok(status)
 }
 
 pub fn get_gpu_info() -> Result<Vec<GpuConnector>> {
