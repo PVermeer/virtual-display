@@ -1,6 +1,8 @@
 use super::status::get_gpu_info;
+use crate::state;
 use anyhow::{Result, bail};
-use common::api::{EnableArgs, GpuConnector, Response, STATE_DIR};
+use common::api::{EnableArgs, GpuConnector, Response};
+use serde::{Deserialize, Serialize};
 use std::{
     fs,
     path::{Path, PathBuf},
@@ -8,6 +10,12 @@ use std::{
 use tracing::{debug, error, instrument};
 
 static EDID: &[u8] = include_bytes!("../../../edids/HDR4k_120.bin");
+
+#[derive(Serialize, Deserialize, Debug)]
+struct ConnectorState {
+    connector: GpuConnector,
+    enabled: bool,
+}
 
 #[instrument(err)]
 pub fn enable_virtual_display(arguments: &EnableArgs) -> Result<Response> {
@@ -70,30 +78,34 @@ fn get_connector(arguments: &EnableArgs) -> Result<GpuConnector> {
 }
 
 fn get_connector_from_state() -> Result<GpuConnector> {
-    let gpu_info = get_gpu_info()?;
-    let mut connector = None;
-
-    for gpu_connector in gpu_info {
-        if !gpu_connector.connected {
-            continue;
-        }
-
-        let state_file = Path::new(STATE_DIR).join(&gpu_connector.name);
-        if state_file.exists() {
-            connector = Some(gpu_connector);
-            break;
-        }
-    }
-
+    let connectors = state::get_all_state_by_type::<ConnectorState>()?;
+    let connector = connectors.into_iter().next();
     let Some(connector) = connector else {
         bail!("Virtual display is not enabled");
     };
 
-    Ok(connector)
+    Ok(connector.connector)
+}
+
+fn set_connector_to_state(connector: GpuConnector) -> Result<()> {
+    state::set_state(
+        &connector.name.clone(),
+        &ConnectorState {
+            enabled: true,
+            connector,
+        },
+    )?;
+
+    Ok(())
 }
 
 fn set_virtual_display(arguments: &EnableArgs) -> Result<String> {
+    if let Ok(connector) = get_connector_from_state() {
+        bail!("Virtual display already enabled on: {}", connector.name);
+    }
+
     let connector = get_connector(arguments)?;
+    let connector_name_clone = connector.name.clone();
 
     debug!(connector = connector.name, "Connecting virtual display");
 
@@ -104,14 +116,18 @@ fn set_virtual_display(arguments: &EnableArgs) -> Result<String> {
     let force_on_path = debug_dri_dir.join("force");
     let trigger_hot_plug_path = debug_dri_dir.join("trigger_hotplug");
 
+    debug!(edid_path = %edid_override_path.display(), "Writing EDID");
     fs::write(edid_override_path, EDID)?;
+
+    debug!(force_on_path = %force_on_path.display(), "Writing force on");
     fs::write(force_on_path, "on")?;
+
+    debug!(hot_plug_path = %trigger_hot_plug_path.display(), "Writing hot plug");
     fs::write(trigger_hot_plug_path, "1")?;
 
-    let state_file = Path::new(STATE_DIR).join(&connector.name);
-    fs::write(state_file, "1")?;
+    set_connector_to_state(connector)?;
 
-    Ok(connector.name)
+    Ok(connector_name_clone)
 }
 
 fn unset_virtual_display() -> Result<String> {
@@ -125,11 +141,13 @@ fn unset_virtual_display() -> Result<String> {
     let force_on_path = debug_dri_dir.join("force");
     let trigger_hot_plug_path = debug_dri_dir.join("trigger_hotplug");
 
+    debug!(force_on_path = %force_on_path.display(), "Writing force off");
     fs::write(force_on_path, "off")?;
+
+    debug!(hot_plug_path = %trigger_hot_plug_path.display(), "Writing hot plug");
     fs::write(trigger_hot_plug_path, "1")?;
 
-    let state_file = Path::new(STATE_DIR).join(&connector.name);
-    fs::remove_file(state_file)?;
+    state::remove_state(&connector.name)?;
 
     Ok(connector.name)
 }

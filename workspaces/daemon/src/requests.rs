@@ -1,5 +1,6 @@
 use crate::{
     daemon::stop_daemon,
+    state,
     status::status,
     virtual_display::{disable_virtual_display, enable_virtual_display},
 };
@@ -42,6 +43,8 @@ async fn write_response(stream: &mut UnixStream, response: &Response) -> Result<
 
 pub async fn handle_requests(mut stream: UnixStream, shutdown_tx: Sender<()>) -> Result<()> {
     let request = read_request(&mut stream).await?;
+
+    debug!(state = ?state::get_all_state(), "Current state");
 
     let response = match request {
         Request::Status => status()?,

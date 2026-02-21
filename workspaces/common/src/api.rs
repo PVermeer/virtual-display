@@ -30,7 +30,6 @@ pub struct GpuConnector {
 }
 pub type GpuInfo = Vec<GpuConnector>;
 
-pub const STATE_DIR: &str = "/run/virtual-display";
 pub const SOCKET_PATH: &str = "/run/virtual-display/virtual-display-daemon.sock";
 pub const SYSTEMD_UNIT: &str = "virtual-display-daemon.service";
 pub const DAEMON_BIN: &str = "virtual-display-daemon";
