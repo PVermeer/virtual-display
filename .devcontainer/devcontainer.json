@@ -14,10 +14,10 @@
 		}
 	},
 	"runArgs": [
-		"--privileged", // Unsecure but allows flatpak install
+		// "--privileged", // Unsecure but allows flatpak install
 		"--device=/dev/dri",
-		"--network=host", // If network is slow in container
-		"--device=/dev/fuse",
+		// "--network=host", // If network is slow in container
+		// "--device=/dev/fuse",
 		"--volume=/sys/kernel/debug:/sys/kernel/debug" // Mount debugFs for sys config overrides
 	],
 	"containerEnv": {
@@ -26,8 +26,8 @@
 	},
 	"mounts": [],
 	// "postCreateCommand": "",
-	"postStartCommand": "sudo dnf update -y && (rustup update || (rustup toolchain uninstall stable && rustup toolchain install stable)) && flatpak --user update -y && sudo flatpak --installation=\"some_custom_installation\" update -y && git submodule update --init --recursive",
-	"initializeCommand": "xhost +local:docker", // Allow x11 from docker
+	"postStartCommand": "sudo dnf update -y && (rustup update || (rustup toolchain uninstall stable && rustup toolchain install stable))",
+	// "initializeCommand": "xhost +local:docker", // Allow x11 from docker
 	"remoteUser": "vscode",
 	"customizations": {
 		"vscode": {
