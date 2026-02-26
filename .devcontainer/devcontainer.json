@@ -43,7 +43,8 @@
 				"ms-azuretools.vscode-containers",
 				"prince781.vala",
 				"RVSmartPorting.rpm-spec-ext",
-				"IronGeek.vscode-env"
+				"IronGeek.vscode-env",
+				"github.vscode-github-actions"
 			]
 		}
 	}

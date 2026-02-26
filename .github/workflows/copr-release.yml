@@ -1,0 +1,17 @@
+name: COPR release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  COPR_build:
+    uses: pvermeer/rpm-tools/.github/workflows/copr-release.yml@main
+    with:
+      spec_file: ./virtual-display.spec
+      copr_owner: pvermeer
+      copr_project: virtual-display
+      copr_package: virtual-display
+    permissions:
+      contents: write
+    secrets:
+      COPR_WEBHOOK: ${{ secrets.COPR_WEBHOOK }}
