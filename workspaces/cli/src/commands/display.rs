@@ -2,7 +2,7 @@ use crate::{
     arguments::StatusArgs,
     socket::{handle_response, send_request},
 };
-use anyhow::Result;
+use anyhow::{Result, bail};
 use common::api::{EnableArgs, Request, Response, Status};
 use tracing::{debug, instrument};
 
@@ -33,8 +33,17 @@ pub async fn status(arguments: &StatusArgs) -> Result<()> {
 pub async fn enable_display(arguments: &EnableArgs) -> Result<()> {
     debug!(?arguments, "Enabling virtual display");
 
+    let mut edid = None;
+    if let Some(edid_path) = &arguments.edid {
+        match edid_path.canonicalize() {
+            Err(_) => bail!("Not a valid EDID path: {}", edid_path.display()),
+            Ok(full_edid_path) => edid = Some(full_edid_path),
+        }
+    }
+
     let request = Request::Enable(EnableArgs {
         connector: arguments.connector.clone(),
+        edid,
     });
     let response = send_request(request).await?;
     handle_response(response);

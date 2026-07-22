@@ -1,6 +1,6 @@
 use clap::Parser;
 use serde::{Deserialize, Serialize};
-use std::fmt::Display;
+use std::{fmt::Display, path::PathBuf};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Request {
@@ -15,6 +15,10 @@ pub struct EnableArgs {
     /// Name of the display connector
     #[arg(short, long)]
     pub connector: Option<String>,
+
+    /// Path to an EDID file
+    #[arg(short, long)]
+    pub edid: Option<PathBuf>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

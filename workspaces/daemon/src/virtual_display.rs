@@ -1,6 +1,6 @@
 use super::status::get_gpu_info;
 use crate::state;
-use anyhow::{Result, bail};
+use anyhow::{Context, Result, bail};
 use common::api::{EnableArgs, GpuConnector, Response};
 use serde::{Deserialize, Serialize};
 use std::{
@@ -117,7 +117,16 @@ fn set_virtual_display(arguments: &EnableArgs) -> Result<String> {
     let trigger_hot_plug_path = debug_dri_dir.join("trigger_hotplug");
 
     debug!(edid_path = %edid_override_path.display(), "Writing EDID");
-    fs::write(edid_override_path, EDID)?;
+    if let Some(edid_path) = &arguments.edid {
+        debug!(user_edid_path = %edid_path.display(), "User provided EDID");
+        if !edid_path.exists() {
+            bail!("Not a valid EDID path: {}", edid_path.display());
+        }
+        let edid = fs::read(edid_path).context("Failed to read EDID")?;
+        fs::write(edid_override_path, edid)?;
+    } else {
+        fs::write(edid_override_path, EDID)?;
+    }
 
     debug!(force_on_path = %force_on_path.display(), "Writing force on");
     fs::write(force_on_path, "on")?;
