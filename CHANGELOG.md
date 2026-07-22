@@ -1,3 +1,13 @@
+## [0.1.0] - 2026-07-22
+
+### 🚀 Features
+
+- Added user provided edid file argument
+
+### ⚙️ Miscellaneous Tasks
+
+- *(dev)* Update dev container
+- *(dev)* Update dev-container
 ## [0.0.4] - 2026-02-26
 
 ### 💼 Other
@@ -8,6 +18,7 @@
 
 - *(dev)* Update dev-container
 - *(ci)* Add copr release action
+- *(release)* 0.0.4
 ## [0.0.3] - 2026-02-21
 
 ### 🚀 Features
