@@ -9,7 +9,7 @@ use std::{
 };
 use tracing::{debug, error, instrument};
 
-static EDID: &[u8] = include_bytes!("../../../edids/HDR4k_120.bin");
+static EDID: &[u8] = include_bytes!("../../../edids/edid.build.bin");
 
 #[derive(Serialize, Deserialize, Debug)]
 struct ConnectorState {
