@@ -1,3 +1,8 @@
+## [0.1.1] - 2026-07-25
+
+### 🐛 Bug Fixes
+
+- *(edid)* Custom edid to support 4k/2k/1080p at 60hz
 ## [0.1.0] - 2026-07-22
 
 ### 🚀 Features
@@ -8,6 +13,7 @@
 
 - *(dev)* Update dev container
 - *(dev)* Update dev-container
+- *(release)* 0.1.0
 ## [0.0.4] - 2026-02-26
 
 ### 💼 Other
