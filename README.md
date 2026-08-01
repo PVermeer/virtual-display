@@ -44,7 +44,16 @@ Usage: virtual-display <COMMAND>
     stop   Stop the daemon (systemd)
 
   enable   Enable virtual display
-    -c, --connector <CONNECTOR>  Name of the display connector
+    -c, --connector <CONNECTOR>
+          Name of the display connector
+
+    -e, --edid <EDID>
+          Provide an EDID file
+
+    --use-4k-120
+          Load a default EDID with 4K@120Hz support.
+
+          This edid does not have a 1440p@60/120hz mode.
 
   disable  Disable virtual display
 ```
