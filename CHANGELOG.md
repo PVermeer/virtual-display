@@ -1,8 +1,21 @@
+## [0.1.2] - 2026-08-01
+
+### 🐛 Bug Fixes
+
+- *(edid)* Added 4k at 120Hz mode back with optional argument
+
+### 📚 Documentation
+
+- *(readme)* Added new enable arguments
 ## [0.1.1] - 2026-07-25
 
 ### 🐛 Bug Fixes
 
 - *(edid)* Custom edid to support 4k/2k/1080p at 60hz
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* 0.1.1
 ## [0.1.0] - 2026-07-22
 
 ### 🚀 Features
