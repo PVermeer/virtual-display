@@ -16,9 +16,15 @@ pub struct EnableArgs {
     #[arg(short, long)]
     pub connector: Option<String>,
 
-    /// Path to an EDID file
+    /// Provide an EDID file
     #[arg(short, long)]
     pub edid: Option<PathBuf>,
+
+    /// Load a default EDID with 4K@120Hz support.
+    ///
+    /// This edid does not have a 1440p@60/120Hz mode.
+    #[arg(long)]
+    pub use_4k_120: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

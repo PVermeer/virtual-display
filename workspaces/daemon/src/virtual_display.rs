@@ -9,7 +9,8 @@ use std::{
 };
 use tracing::{debug, error, instrument};
 
-static EDID: &[u8] = include_bytes!("../../../edids/edid.build.bin");
+static EDID_DEFAULT: &[u8] = include_bytes!("../../../edids/edid.build.bin");
+static EDID_4K_120: &[u8] = include_bytes!("../../../edids/HDR4k_120.bin");
 
 #[derive(Serialize, Deserialize, Debug)]
 struct ConnectorState {
@@ -117,6 +118,7 @@ fn set_virtual_display(arguments: &EnableArgs) -> Result<String> {
     let trigger_hot_plug_path = debug_dri_dir.join("trigger_hotplug");
 
     debug!(edid_path = %edid_override_path.display(), "Writing EDID");
+
     if let Some(edid_path) = &arguments.edid {
         debug!(user_edid_path = %edid_path.display(), "User provided EDID");
         if !edid_path.exists() {
@@ -124,8 +126,10 @@ fn set_virtual_display(arguments: &EnableArgs) -> Result<String> {
         }
         let edid = fs::read(edid_path).context("Failed to read EDID")?;
         fs::write(edid_override_path, edid)?;
+    } else if arguments.use_4k_120 {
+        fs::write(edid_override_path, EDID_4K_120)?;
     } else {
-        fs::write(edid_override_path, EDID)?;
+        fs::write(edid_override_path, EDID_DEFAULT)?;
     }
 
     debug!(force_on_path = %force_on_path.display(), "Writing force on");
