@@ -1,3 +1,8 @@
+## [0.1.3] - 2026-08-12
+
+### 🐛 Bug Fixes
+
+- *(edid)* Removed custom edid
 ## [0.1.2] - 2026-08-01
 
 ### 🐛 Bug Fixes
@@ -7,6 +12,10 @@
 ### 📚 Documentation
 
 - *(readme)* Added new enable arguments
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* 0.1.2
 ## [0.1.1] - 2026-07-25
 
 ### 🐛 Bug Fixes
