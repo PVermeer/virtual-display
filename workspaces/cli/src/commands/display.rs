@@ -44,7 +44,6 @@ pub async fn enable_display(arguments: &EnableArgs) -> Result<()> {
     let request = Request::Enable(EnableArgs {
         connector: arguments.connector.clone(),
         edid,
-        use_4k_120: arguments.use_4k_120,
     });
     let response = send_request(request).await?;
     handle_response(response);

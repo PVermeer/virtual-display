@@ -10,7 +10,7 @@ use tracing::error;
 
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> Result<()> {
-    match sudo::escalate_if_needed() {
+    match sudo::with_env(&["VD_LOG"]) {
         Ok(_) => (),
         Err(error) => {
             error!(error);

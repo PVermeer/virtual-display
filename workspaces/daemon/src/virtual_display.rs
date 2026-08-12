@@ -9,8 +9,7 @@ use std::{
 };
 use tracing::{debug, error, instrument};
 
-static EDID_DEFAULT: &[u8] = include_bytes!("../../../edids/edid.build.bin");
-static EDID_4K_120: &[u8] = include_bytes!("../../../edids/HDR4k_120.bin");
+static EDID_DEFAULT: &[u8] = include_bytes!("../../../edids/HDR4k_120.bin");
 
 #[derive(Serialize, Deserialize, Debug)]
 struct ConnectorState {
@@ -126,8 +125,6 @@ fn set_virtual_display(arguments: &EnableArgs) -> Result<String> {
         }
         let edid = fs::read(edid_path).context("Failed to read EDID")?;
         fs::write(edid_override_path, edid)?;
-    } else if arguments.use_4k_120 {
-        fs::write(edid_override_path, EDID_4K_120)?;
     } else {
         fs::write(edid_override_path, EDID_DEFAULT)?;
     }

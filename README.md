@@ -50,11 +50,6 @@ Usage: virtual-display <COMMAND>
     -e, --edid <EDID>
           Provide an EDID file
 
-    --use-4k-120
-          Load a default EDID with 4K@120Hz support.
-
-          This edid does not have a 1440p@60/120hz mode.
-
   disable  Disable virtual display
 ```
 
