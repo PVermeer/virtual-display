@@ -1,8 +1,21 @@
+## [0.1.4] - 2026-11-23
+
+### 🐛 Bug Fixes
+
+- *(spec-file)* Added missing install permissions
+
+### ⚙️ Miscellaneous Tasks
+
+- *(dev)* Update dev container
 ## [0.1.3] - 2026-08-12
 
 ### 🐛 Bug Fixes
 
 - *(edid)* Removed custom edid
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* 0.1.3
 ## [0.1.2] - 2026-08-01
 
 ### 🐛 Bug Fixes

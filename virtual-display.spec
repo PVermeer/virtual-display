@@ -6,10 +6,10 @@
 %global author pvermeer
 %global source virtual-display
 %global sourcerepo https://github.com/PVermeer/virtual-display
-%global tag v0.1.3
+%global tag v0.1.4
 
 Name: virtual-display
-Version: 0.1.3
+Version: 0.1.4
 Release: 0%{?dist}
 License: GPL-3.0 license
 Summary: Enable a virtual kernel display
