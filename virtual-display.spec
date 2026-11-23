@@ -64,10 +64,10 @@ mkdir -p %{buildroot}%{_unitdir}
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_presetdir}
 
-install %{sourcedir}/assets/%{service} %{buildroot}%{_unitdir}
-install %{sourcedir}/assets/%{service_preset} %{buildroot}%{_presetdir}
-install %{sourcedir}/target/release/virtual-display-daemon %{buildroot}%{_bindir}
-install %{sourcedir}/target/release/virtual-display %{buildroot}%{_bindir}
+install -m 0644 %{sourcedir}/assets/%{service} %{buildroot}%{_unitdir}
+install -m 0644 %{sourcedir}/assets/%{service_preset} %{buildroot}%{_presetdir}
+install -m 0755 %{sourcedir}/target/release/virtual-display-daemon %{buildroot}%{_bindir}
+install -m 0755 %{sourcedir}/target/release/virtual-display %{buildroot}%{_bindir}
 
 %post
 %systemd_post %{service}
